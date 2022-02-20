@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-2" style="background-color: darkgray; padding: 5% 5% 15% 5%">
+    <div class="row">
+        <div class="col-4">
+            <div class="text-center">
+                <img src="{% if request.user.restaurant.restaurant_avatar %} {{ request.user.restaurant.restaurant_avatar.url }} {% else %} {% static 'pics/driverpic.jpg' %} {% endif %}" alt="restaurant_avatar" height="80" width="80" class="rounded-circle">
+                <h3>{{request.user.get_full_name}}</h3>
+                <h6>{{request.user.email}}</h6>
+                <h6>{{request.user.restaurant.restaurant_address}}</h6>
+            </div> 
+            <div class="list-group text-center">
+                <a href="{% url 'restaurant:restaurant_profile' %}" class="list-group-item">Profile</a>
+                <a href="{% url 'restaurant:post_delivery' %}" class="list-group-item">List Deliveries</a>
+                
+            </div>
+        </div>
+        <div class="col-8">
+            {% block main %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

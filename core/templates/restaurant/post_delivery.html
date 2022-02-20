@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block head %}
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_MAP}}&callback=initMap&libraries=places&v=weekly"
+    async>
+    </script>
+
+<style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #googlemap {
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="card mt-4 text-center ">
+        <div class="card-header">
+            <h2 class="mt-3">Post Delivery</h2>
+        </div>
+        <div class="card-body">
+            <p>Restaurant will post deliveries here</p>
+            <div class="card text-center bg-white" style="padding: 10% 10% 10% 10%;">
+
+                <form method="POST">
+                    <div class="text-dark text-white">
+                        <div class="row">
+                            <div class="class col-8">
+                                {% csrf_token %}
+                                {% bootstrap_form deliverypost_form exclude='delivery_address_latitude, delivery_address_longitude' %}
+                                <input hidden id="delivery_address_latitude" name="delivery_address_latitude" value="{{posting.delivery_address_latitude}}">
+                                <input hidden id="delivery_address_longitude" name="delivery_address_longitude" value="{{posting.delivery_address_longitude}}">
+                            </div>
+                            <div class="class col-4">
+                                <div id="googlemap"></div>
+                                <div id="infowindow-content">
+                                    <span id="place-name" class="title"></span><br />
+                                    <span id="place-address"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" type="submit">Post</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 text-center ">
+        <div class="card-header">
+            <h2 class="mt-3">Posted</h2>
+        </div>
+        <div class="card-body">
+            {% if not posting %}
+            <h2>No Posted Delivery Yet !!</h2>
+            {% else %}
+
+            <div class="card-bo">
+                <div class="card">
+                    {% for post in posting %}
+                    <h5>{{ post.address }}</h3>
+                        <p>{{ post.information }}</p>
+                        <p>{{ post.posted_time }}</p>
+                        <p>{{ post.status_of_delivery }}</p>
+                        <p>Delivery Charge: € {{ post.price }}</p>
+                        <p>Duration: {{ post.duration }} mins</p>
+                        {% endfor %}
+                </div>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById("googlemap"), {
+            center: { lat: 40.749933, lng: -73.98633 },
+            zoom: 13,
+            mapTypeControl: false,
+        });
+
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+            {
+                travelMode: 'DRIVING',
+            }
+        )
+
+        const input = document.getElementById("id_address");
+
+        const options = {
+            fields: ["formatted_address", "geometry", "name"],
+            strictBounds: false,
+            types: ["establishment"],
+        };
+
+        const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        // Bind the map's bounds (viewport) property to the autocomplete object,
+        // so that the autocomplete requests use the current map bounds for the
+        // bounds option in the request.
+        autocomplete.bindTo("bounds", map);
+
+        const infowindow = new google.maps.InfoWindow();
+        const infowindowContent = document.getElementById("infowindow-content");
+
+        infowindow.setContent(infowindowContent);
+
+        const marker = new google.maps.Marker({
+            map,
+            anchorPoint: new google.maps.Point(0, -29),
+        });
+
+        autocomplete.addListener("place_changed", () => {
+            infowindow.close();
+            marker.setVisible(false);
+
+            const place = autocomplete.getPlace();
+
+            if (!place.geometry || !place.geometry.location) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+                window.alert("No details available for input: '" + place.name + "'");
+                return;
+            }
+
+            // If the place has a geometry, then present it on a map.
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(17);
+            }
+
+            marker.setPosition(place.geometry.location);
+            marker.setVisible(true);
+            infowindowContent.children["place-name"].textContent = place.name;
+            infowindowContent.children["place-address"].textContent = place.formatted_address;
+            infowindow.open(map, marker);
+
+            $("#delivery_address_latitude").val(place.geometry.location.lat());
+            $("#delivery_address_longitude").val(place.geometry.location.lng());
+        });
+    }
+
+</script>
+
+{% endblock %}

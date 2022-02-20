@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+</head>
+
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% block head %}
+{% endblock %}
+<body>
+    <nav class="navbar {% if not request.user.is_authenticated %} navbar-expand-lg {% endif %} navbar-light bg-secondary">
+          <a class="navbar-brand" href="/">Delivery Management</a>
+          {% if not request.user.is_authenticated %}
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item {% if request.GET.next == '/driver/' %}active{% endif %}">
+                <a class="nav-link active" aria-current="page" href="/signin/?next=/driver/">Driver</a>
+              </li>
+              <li class="nav-item {% if request.GET.next == '/restaurant/' %}active{% endif %}">
+                <a class="nav-link active" aria-current="page" href="/signin/?next=/restaurant/">Restaurant</a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <form class="form-inline">
+            <span class="mr-4">
+              {{ request.user.get_full_name|title }}
+            </span>
+            <a href="/signout" class="btn btn-danger btn-block">SignOut</a>
+          </form>
+          {% endif %}
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    
+    <footer class="text-center mt-5 mb-5">
+        &copy; Delivery Management
+    </footer>
+</body>
+
+</html>
