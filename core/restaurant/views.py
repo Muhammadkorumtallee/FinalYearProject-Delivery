@@ -1,7 +1,7 @@
 
 from ast import Del
 from django.conf import settings
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from core.restaurant import forms
@@ -93,3 +93,40 @@ def post_delivery(request):
         "posting": posts,
         "GOOGLE_API_MAP": settings.GOOGLE_API_MAP,})
         
+@login_required(login_url="/sign-in/?next=/restaurant/")
+def current_delivery_page(request):
+    deliveries = Delivery.objects.filter(
+        restaurant = request.user.restaurant,
+        status_of_delivery__in=[
+            Delivery.DELIVERY_DELIVERING,
+            Delivery.DELIVERY_POSTED
+        ]
+    )
+
+    
+
+    if request.method == 'POST':
+        delivery = get_object_or_404(Delivery, pk=request.POST.get('receipt_number'))
+        if delivery:
+            delivery.status_of_delivery = Delivery.DELIVERY_CANCELLED
+            delivery.save()
+
+    return render(request, 'restaurant/deliveries.html',
+    {
+        "deliveries": deliveries
+    })
+
+@login_required(login_url="/sign-in/?next=/restaurant/")
+def archived_delivery_page(request):
+    deliveries = Delivery.objects.filter(
+        restaurant = request.user.restaurant,
+        status_of_delivery__in=[
+            Delivery.DELIVERY_DELIVERED,
+            Delivery.DELIVERY_CANCELLED
+        ]
+    )
+
+    return render(request, 'restaurant/deliveries.html',
+    {
+        "deliveries": deliveries
+    })

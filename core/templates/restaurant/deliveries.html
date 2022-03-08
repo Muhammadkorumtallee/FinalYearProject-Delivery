@@ -1,0 +1,67 @@
+{% extends 'restaurant/restaurantpage.html' %}
+
+{% block main %}
+<script src="https://kit.fontawesome.com/d26d1345cd.js" crossorigin="anonymous"></script>
+{% url 'restaurant:current_delivery' as current_delivery_url %}
+{% url 'restaurant:archived_delivery' as archived_delivery_url %}
+
+<ul class="nav nav-pills nav-fill">
+    <li class="nav-item">
+        <a class="nav-link {% if request.path == current_delivery_url %}active{% endif %}" href="{% url 'restaurant:current_delivery' %}">Available Deliveries</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.path == archived_delivery_url %}active{% endif %}" href="{% url 'restaurant:archived_delivery' %}">Done/Cancelled Deliveries</a>
+    </li>
+</ul>
+
+<div class="list-group m-3">
+    {% if deliveries %}
+    {% for d in deliveries %}
+    <div>
+        <div class="card">
+            <h6 class="text-center">{{ d.posted_time }}</h6>
+            <div class="row card-body">
+                <div class="col-9">
+                    <div class="m-3">
+                        <em class="fas fa-solid fa-map-pin"></em>
+                        <strong class="m-3">{{ d.restaurant }}</strong>
+                    </div>
+
+                    <div class="m-3">
+                        <em class="fas fa-flag-checkered"></em>
+                        <strong class="m-2">{{ d.address }}</strong>
+                        <br>
+                        <small class="font-weight-bold">Information :</small>
+                        <small>{{ d.information }}</small>
+                        <br>
+                        <small>receipt_number : {{ d.receipt_number }}</small>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div>
+                        <span 
+                         class="badge m-3 {% if request.path == archived_delivery_url %}badge badge-danger{% else %} badge badge-success {% endif %}">{{ d.status_of_delivery }}
+                        </span>
+                        <h4 class="m-3">€{{ d.price }}0</h4>
+                    </div>
+                    {% if d.status_of_delivery == 'posted' %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" name="update">Cancel</button>
+                        <input type="hidden" value="{{ d.receipt_number }}" name="receipt_number">
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-9">
+        <h2>No Delivery Here</h2>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

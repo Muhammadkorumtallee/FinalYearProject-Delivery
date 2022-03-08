@@ -3,6 +3,11 @@
 
 {% block content %}
 
+{% url 'restaurant:current_delivery' as current_delivery_url %}
+{% url 'restaurant:archived_delivery' as archived_delivery_url %}
+{% url 'restaurant:post_delivery' as post_delivery_url %}
+{% url 'restaurant:restaurant_profile' as restaurant_profile_url %}
+
 <div class="container mt-2" style="background-color: darkgray; padding: 5% 5% 15% 5%">
     <div class="row">
         <div class="col-4">
@@ -13,8 +18,9 @@
                 <h6>{{request.user.restaurant.restaurant_address}}</h6>
             </div> 
             <div class="list-group text-center">
-                <a href="{% url 'restaurant:restaurant_profile' %}" class="list-group-item">Profile</a>
-                <a href="{% url 'restaurant:post_delivery' %}" class="list-group-item">List Deliveries</a>
+                <a href="{% url 'restaurant:restaurant_profile' %}" class="list-group-item {% if request.path == restaurant_profile_url %} active {% endif %}">Profile</a>
+                <a href="{% url 'restaurant:post_delivery' %}" class="list-group-item {% if request.path == post_delivery_url %} active {% endif %}">Post Deliveries</a>
+                <a href="{% url 'restaurant:current_delivery' %}" class="list-group-item {% if request.path == current_delivery_url or request.path == archived_delivery_url %}active{% endif %}">Deliveries Page</a>
                 
             </div>
         </div>
