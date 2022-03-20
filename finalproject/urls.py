@@ -14,13 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from unicodedata import name
 from xml.dom.minidom import Document
 from django.contrib import admin
 from django.urls import path, include
 from core import views
 from django.contrib.auth import views as auth_views
 from core.restaurant import views as r_views
-from core.driver import views as d_views
+from core.driver import views as d_views, apis as d_apis
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -33,7 +34,9 @@ restaurant_urlpatterns = [
 ]
 
 driver_urlpatterns = [
-    path('', d_views.home, name="home")
+    path('', d_views.home, name="home"),
+    path('delivery/available/', d_views.deliveries_available_page, name="deliveries_available"),
+    path('api/available_deliveries/', d_apis.available_deliveries_api, name="available_deliveries"),
 ]
 
 urlpatterns = [

@@ -1,6 +1,3 @@
-from distutils.command.upload import upload
-from email.policy import default
-from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -17,6 +14,13 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+class Driver(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    latitude = models.FloatField(default=0)
+    longitude = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.user.get_full_name()
 
 class Delivery(models.Model):
     DELIVERY_POSTING = "posting"
@@ -47,6 +51,9 @@ class Delivery(models.Model):
     duration = models.IntegerField(default=0)
     distance = models.FloatField(default=0)
     price = models.FloatField(default=0)
+
+    #assign driver to delivery
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.address

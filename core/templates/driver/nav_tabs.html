@@ -1,0 +1,49 @@
+<style>
+    .bottom-nav-tabs {
+        position: fixed;
+        height: 50px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        text-align: center;
+        background-color: rgb(167, 167, 167);
+        box-shadow: rgb(17, 17, 17);
+        padding: 5px;
+    }
+
+    .bottom-nav-tabs>a {
+        padding: 0.3%;
+        flex: 1;
+        text-decoration: none;
+    }
+
+    .bottom-nav-tabs>a>em {
+        font-size: 20px;
+    }
+
+    .bottom-nav-tabs>a.active {
+        color: green;
+    }
+
+    .bottom-nav-tabs>a>span {
+        display: block;
+        font-size: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="bottom-nav-tabs d-flex">
+    <a href="#" class="active">
+        <em class="fas fa-user"></em>
+        <span>Driver</span>
+    </a>
+    <a href="#">
+        <em class="fas fa-bell"></em>
+        <span>Deliveries</span>
+    </a>
+    <a href="#">
+        <em class="fas fa-check-circle"></em>
+        <span>Jobs Completed</span>
+    </a>
+</div>
