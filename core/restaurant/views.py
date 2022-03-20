@@ -100,9 +100,7 @@ def current_delivery_page(request):
             Delivery.DELIVERY_POSTED
         ]
     )
-
-    
-
+        
     if request.method == 'POST':
         delivery = get_object_or_404(Delivery, pk=request.POST.get('receipt_number'))
         if delivery:

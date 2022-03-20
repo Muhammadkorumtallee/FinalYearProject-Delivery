@@ -5,19 +5,60 @@
     async>
     </script>
 
+
 <script>
+    //Google map and using api to display deliveries on map and click event to show delivery details
     function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: 53.350140, lng: -6.266155 },
             zoom: 13,
         });
+
+        fetch("{% url 'driver:available_deliveries' %}").then(response => response.json()).then(json => {
+            console.log(json);
+
+            for (let d = 0; d < json.deliveries.length; d++) {
+                const delivery = json.deliveries[d];
+                const position = { lat: delivery.delivery_address_latitude, lng: delivery.delivery_address_longitude };
+                const show_on_map = new google.maps.Marker
+                    ({
+                        position,
+                        map,
+                    });
+
+                new google.maps.InfoWindow({
+                    content: "<small><strong>" + delivery.address + "<medium><br>€" + delivery.price
+                }).open(map, show_on_map);
+
+                show_on_map.addListener("click", () => {
+                    PopUpDelivery(delivery);
+                })
+            }
+        })
+    }
+
+    function PopUpDelivery(delivery) {
+        $("#delivery-popup").css("display", "block");
+        $("#address").html(delivery.address);
+        $("#show-distance").html(delivery.distance + " Km");
+        $("#show-duration").html(delivery.duration + " Mins");
+        $("#show-price").html("€ " + delivery.price);
+        $("#show-info").html("Info : " + delivery.information);
+        $("#show-id").html(delivery.receipt_number)
     }
 </script>
 
 <style>
-    #map
-    {
+    #map {
         flex: 1;
+    }
+
+    .gm-ui-hover-effect {
+        display: none !important;
+    }
+
+    #delivery-popup {
+        display: none;
     }
 </style>
 {% endblock %}
@@ -26,8 +67,49 @@
 
 <div class="d-flex flex-column h-100" style="padding-bottom: 50px">
     <div id="map"></div>
-</div>
+    {% if del %}
+    {% for d in del %}
+    <div class="card" id="delivery-popup">
+        <div class="card-body p-2">
+            <div class="details">
+                <div class="p-2">
+                    <strong id="address"></strong>
+                    <div>
+                        <strong id="show-info"></strong>
+                    </div>
+                    <div>
+                        <strong id="show-distance"></strong>
+                        <strong id="show-duration"></strong>
+                    </div>
+                    <div>
+                        <strong id="show-price"></strong>
+                        <strong id="show-id"></strong>
+                    </div>
 
-{% include 'driver/nav_tabs.html' %}
 
-{% endblock %}
+                    <div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" name="accept">Accept</button>
+                            <input type="hidden" value="{{ d.receipt_number }}" name="receipt_number">
+                        </form>
+                    </div>
+                    
+  
+                    {% if messages %}
+                    {% for m in messages %}
+                    {% if m.tags %}
+                    <script>alert("{{ m }}")</script>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% include 'driver/nav_tabs.html' %}
+
+    {% endblock %}
