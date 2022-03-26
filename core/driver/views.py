@@ -19,8 +19,6 @@ def deliveries_available_page(request):
     )
 
     #When driver accept delivery then status of delivery changes to delivering
-    #delivery = Delivery.objects.filter(status_of_delivery=Delivery.DELIVERY_POSTED).last()
-    
     if request.method == 'POST':
         delivery = get_object_or_404(Delivery, pk=request.POST.get('receipt_number'))
         if delivery:
