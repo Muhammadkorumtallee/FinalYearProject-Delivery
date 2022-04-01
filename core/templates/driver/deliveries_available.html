@@ -45,11 +45,11 @@
         $("#show-price").html("€ " + delivery.price);
         $("#show-info").html("Info : " + delivery.information);
         $("#show-id").html("Pk : " + delivery.receipt_number);
-
+        
         var input_tag = getTag('getpk');
         input_tag.value = delivery.receipt_number;
     }
-    function getTag(id) {
+    function getTag(id){
         return document.getElementById(id);
     }
 </script>
@@ -73,6 +73,7 @@
 
 <div class="d-flex flex-column h-100" style="padding-bottom: 50px">
     <div id="map"></div>
+
     <div class="card" id="delivery-popup">
         <div class="card-body p-2">
             <div class="details">
@@ -99,8 +100,8 @@
                             <input type="hidden" id="getpk" value="" name="receipt_number">
                         </form>
                     </div>
-
-
+                    
+  
                     {% if messages %}
                     {% for m in messages %}
                     {% if m.tags %}
@@ -112,9 +113,6 @@
             </div>
         </div>
     </div>
-</div>
-
-
 
     {% include 'driver/nav_tabs.html' %}
 

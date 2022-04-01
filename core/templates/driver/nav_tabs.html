@@ -33,17 +33,20 @@
     }
 </style>
 
+{% url 'driver:deliveries_available' as deliveries_available_url %}
+{% url 'driver:delivering_delivery' as delivering_delivery_url %}
+
 <div class="bottom-nav-tabs d-flex">
-    <a href="#" class="active">
+    <a href="{% url 'driver:deliveries_available' %}" class="{% if request.path == deliveries_available_url %}active{% endif %}">
         <em class="fas fa-user"></em>
         <span>Driver</span>
     </a>
-    <a href="#">
+    <a href="{% url 'driver:deliveries_available' %}" class="{% if request.path == deliveries_available_url %}active{% endif %}">
         <em class="fas fa-bell"></em>
         <span>Deliveries</span>
     </a>
-    <a href="#">
+    <a href="{% url 'driver:delivering_delivery' %}" class="{% if request.path == delivering_delivery_url %}active{% endif %}">
         <em class="fas fa-check-circle"></em>
-        <span>Jobs Completed</span>
+        <span>Accepted</span>
     </a>
 </div>

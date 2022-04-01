@@ -1,0 +1,88 @@
+{% extends 'driver/driverpage.html' %}
+{% load static %}
+
+{% block head %}
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_MAP }}&callback=initMap&libraries=places&v=weekly"
+    async>
+    </script>
+<script>
+
+    var r_latitude = parseFloat("{{ request.user.restaurant.restaurant_address_latitude }}");
+    var r_longitude = parseFloat("{{ request.user.restaurant.restaurant_address_longitude }}");
+    var delivery_latitude = parseFloat("{{ del.delivery_address_latitude }}");
+    var delivery_longitude = parseFloat("{{ del.delivery_address_longitude }}");
+
+    function initMap() {
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: { lat: 53.350140, lng: -6.266155 },
+        });
+
+        directionsRenderer.setMap(map);
+
+        calculateAndDisplayRoute(directionsService, directionsRenderer);
+    }
+
+    function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+        directionsService
+            .route({
+                origin: new google.maps.LatLng(r_latitude, r_longitude),
+                destination: new google.maps.LatLng(delivery_latitude, delivery_longitude),
+                travelMode: google.maps.TravelMode.DRIVING,
+            })
+            .then((response) => {
+                directionsRenderer.setDirections(response);
+            })
+            .catch((e) => window.alert("Directions request failed due to " + status));
+    }
+</script>
+
+<style>
+    #map {
+        flex: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if del %}
+<div class="d-flex flex-column h-100" style="padding-bottom: 50px">
+    <div id="map"></div>
+    <div class="card">
+        <div class="card-body p-2">
+            <div class="details">
+                <div class="p-2">
+                    <strong></strong>
+                    <div>
+                        <strong></strong>
+                    </div>
+                    <div>
+                        <strong>{{ del.address }}</strong>
+                        <strong></strong>
+                    </div>
+                    <div>
+                        <strong>{{ request.user.restaurant.restaurant_address_latitude }}</strong>
+                        <br>
+                        <strong></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card" style="padding:14em">
+    No Delivery to be Delivered
+</div>
+{% endif %}
+
+
+
+{% include 'driver/nav_tabs.html' %}
+
+{% endblock %}

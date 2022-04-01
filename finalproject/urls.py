@@ -37,6 +37,7 @@ driver_urlpatterns = [
     path('', d_views.home, name="home"),
     path('delivery/available/', d_views.deliveries_available_page, name="deliveries_available"),
     path('api/available_deliveries/', d_apis.available_deliveries_api, name="available_deliveries"),
+    path('delivery/delivering/', d_views.delivering_delivery_page, name="delivering_delivery"),
 ]
 
 urlpatterns = [
