@@ -44,7 +44,6 @@
         $("#show-duration").html(delivery.duration + " Mins");
         $("#show-price").html("€ " + delivery.price);
         $("#show-info").html("Info : " + delivery.information);
-        $("#show-id").html("Pk : " + delivery.receipt_number);
         
         var input_tag = getTag('getpk');
         input_tag.value = delivery.receipt_number;
@@ -88,8 +87,6 @@
                     </div>
                     <div>
                         <strong id="show-price"></strong>
-                        <br>
-                        <strong id="show-id"></strong>
                     </div>
 
 

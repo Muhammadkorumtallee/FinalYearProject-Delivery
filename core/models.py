@@ -42,6 +42,7 @@ class Delivery(models.Model):
     address = models.CharField(max_length=255)
     information = models.CharField(max_length=255)
     posted_time = models.DateTimeField(default=timezone.now)
+    delivered_time = models.DateTimeField(null=True, blank=True)
 
     #delivery latitude and longitude 
     delivery_address_latitude = models.FloatField(default=0)

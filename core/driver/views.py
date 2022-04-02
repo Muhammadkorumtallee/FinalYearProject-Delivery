@@ -2,8 +2,10 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from pytz import timezone
 from core.models import Delivery
 from django.contrib import messages
+from django.utils import timezone
 
 
 @login_required(login_url="/signin/?next=/driver/")
@@ -39,13 +41,31 @@ def deliveries_available_page(request):
 @login_required(login_url="/signin/?next=/driver/")
 def delivering_delivery_page(request):
     delivery = Delivery.objects.filter(
-        driver=request.user.driver, 
+        driver=request.user.driver,
         status_of_delivery__in=[
             Delivery.DELIVERY_DELIVERING,
         ]
     ).last()
 
+    if request.method == 'POST' and delivery.status_of_delivery == Delivery.DELIVERY_DELIVERING:
+        delivery.status_of_delivery = Delivery.DELIVERY_DELIVERED
+        delivery.delivered_time = timezone.now()
+        delivery.save()
+
     return render(request, 'driver/delivering_delivery.html', {
         "GOOGLE_API_MAP": settings.GOOGLE_API_MAP,
         "del": delivery
     })
+
+
+# @login_required(login_url="/signin/?next=/driver/")
+# def delivered_delivery(request):
+#     delivery = Delivery.objects.filter(
+#         status_of_delivery__in=[Delivery.DELIVERY_POSTED]
+#     )
+
+#     if request.method == 'POST' and delivery.status_of_delivery == Delivery.DELIVERY_DELIVERING:
+#         delivery.status_of_delivery = Delivery.DELIVERY_DELIVERED
+#         delivery.save()
+
+#     return render(request, 'driver/delivering_delivery.html')

@@ -50,7 +50,7 @@
 
 {% block content %}
 
-{% if del %}
+{% if del.status_of_delivery == 'delivering' %}
 <div class="d-flex flex-column h-100" style="padding-bottom: 50px">
     <div id="map"></div>
     <div class="card">
@@ -66,9 +66,11 @@
                         <strong></strong>
                     </div>
                     <div>
-                        <strong>{{ request.user.restaurant.restaurant_address_latitude }}</strong>
-                        <br>
-                        <strong></strong>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" name="accept">Delivered</button>
+                            <input type="hidden" id="getpk" value="" name="receipt_number">
+                        </form>
                     </div>
                 </div>
             </div>
