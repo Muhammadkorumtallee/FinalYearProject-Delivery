@@ -35,9 +35,10 @@
 
 {% url 'driver:deliveries_available' as deliveries_available_url %}
 {% url 'driver:delivering_delivery' as delivering_delivery_url %}
+{% url 'driver:driver_profile' as driver_profile_url %}
 
 <div class="bottom-nav-tabs d-flex">
-    <a href="{% url 'driver:deliveries_available' %}" class="{% if request.path == deliveries_available_url %}active{% endif %}">
+    <a href="{% url 'driver:driver_profile' %}" class="{% if request.path == driver_profile_url %}active{% endif %}">
         <em class="fas fa-user"></em>
         <span>Driver</span>
     </a>

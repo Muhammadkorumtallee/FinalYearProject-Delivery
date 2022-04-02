@@ -52,20 +52,26 @@ def delivering_delivery_page(request):
         delivery.delivered_time = timezone.now()
         delivery.save()
 
+        return redirect(reverse('driver:delivering_delivery'))
+
     return render(request, 'driver/delivering_delivery.html', {
         "GOOGLE_API_MAP": settings.GOOGLE_API_MAP,
         "del": delivery
     })
 
 
-# @login_required(login_url="/signin/?next=/driver/")
-# def delivered_delivery(request):
-#     delivery = Delivery.objects.filter(
-#         status_of_delivery__in=[Delivery.DELIVERY_POSTED]
-#     )
+@login_required(login_url="/signin/?next=/driver/")
+def driver_profile(request):
+    return render(request, 'driver/driver_profile.html')
 
-#     if request.method == 'POST' and delivery.status_of_delivery == Delivery.DELIVERY_DELIVERING:
-#         delivery.status_of_delivery = Delivery.DELIVERY_DELIVERED
-#         delivery.save()
 
-#     return render(request, 'driver/delivering_delivery.html')
+@login_required(login_url="/signin/?next=/driver/")
+def salary(request):
+    deliveries = Delivery.objects.filter(
+        driver=request.user.driver, status_of_delivery=Delivery.DELIVERY_DELIVERED)
+
+    total = round(sum(delivery.price for delivery in deliveries))
+
+    return render(request, 'driver/salary.html', {
+        "total": total
+    })

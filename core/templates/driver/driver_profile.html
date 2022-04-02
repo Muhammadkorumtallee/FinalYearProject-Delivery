@@ -1,0 +1,61 @@
+{% extends 'driver/driverpage.html' %}
+{% load static %}
+
+{% block content %}
+
+{% url 'driver:deliveries_available' as deliveries_available_url %}
+{% url 'driver:delivering_delivery' as delivering_delivery_url %}
+{% url 'driver:salary' as salary_url %}
+
+<nav class="navbar {% if not request.user.is_authenticated %} navbar-expand-lg {% endif %} navbar-light bg-secondary">
+    <a class="navbar-brand" href="/">Delivery Management</a>
+    {% if not request.user.is_authenticated %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item {% if request.GET.next == '/driver/' %}active{% endif %}">
+          <a class="nav-link active" aria-current="page" href="/signin/?next=/driver/">Driver</a>
+        </li>
+        <li class="nav-item {% if request.GET.next == '/restaurant/' %}active{% endif %}">
+          <a class="nav-link active" aria-current="page" href="/signin/?next=/restaurant/">Restaurant</a>
+        </li>
+      </ul>
+    </div>
+    {% else %}
+    <form class="form-inline">
+      <span class="mr-4">
+        {{ request.user.get_full_name|title }}
+      </span>
+      <a href="/signout" class="btn btn-danger btn-block">SignOut</a>
+    </form>
+    {% endif %}
+</nav>
+
+<div class="container mt-2" style="background-color: darkgray; padding: 5% 5% 15% 5%">
+    <div class="row">
+        <div class="col-4">
+            <div class="text-center">
+                <img src="{% if request.user.restaurant.restaurant_avatar %} {{ request.user.restaurant.restaurant_avatar.url }} {% else %} {% static 'pics/driverpic.jpg' %} {% endif %}" alt="restaurant_avatar" height="80" width="80" class="rounded-circle">
+                <h3>{{request.user.get_full_name}}</h3>
+                <h6>{{request.user.email}}</h6>
+                <h6>{{request.user.restaurant.restaurant_address}}</h6>
+            </div> 
+            <div class="list-group text-center">
+                <a href="{% url 'driver:salary' %}" class="list-group-item {% if request.path == salary_url %} active {% endif %}">Salary</a>
+               
+            </div>
+        </div>
+        <div class="col-8">
+            {% block main %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% include 'driver/nav_tabs.html' %}
+
+{% endblock %}

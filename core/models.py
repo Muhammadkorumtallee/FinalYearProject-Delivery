@@ -18,6 +18,7 @@ class Driver(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
+    
 
     def __str__(self):
         return self.user.get_full_name()
