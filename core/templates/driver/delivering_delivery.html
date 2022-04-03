@@ -25,20 +25,55 @@
 
         directionsRenderer.setMap(map);
 
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
+        calculateAndDisplayRoute(map, directionsService, directionsRenderer);
     }
 
-    function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-        directionsService
-            .route({
+    function calculateAndDisplayRoute(map, directionsService, directionsRenderer) {
+        directionsService.route(
+            {
                 origin: new google.maps.LatLng(r_latitude, r_longitude),
                 destination: new google.maps.LatLng(delivery_latitude, delivery_longitude),
                 travelMode: google.maps.TravelMode.DRIVING,
-            })
-            .then((response) => {
-                directionsRenderer.setDirections(response);
-            })
-            .catch((e) => window.alert("Directions request failed due to " + status));
+            },
+            (response, status) => {
+                if (status === "OK") {
+
+                    directionsRenderer.setDirections(response);
+
+                    var leg = response.routes[0].legs[0];
+                    new google.maps.Marker({
+                        position: leg.start_location,
+                        map: map,
+                        icon: "{% static 'pics/restaurant_icon.png' %}"
+                        //<a href="https://www.flaticon.com/free-icons/restaurant" title="restaurant icons">Restaurant icons created by nawicon - Flaticon</a>
+                    });
+
+                    updateDriverPosition(map);
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
+    }
+
+    function updateDriverPosition(map) {
+        navigator.geolocation.watchPosition(
+            pos => {
+                var driverPostion = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+                if (!window.driverMarker) {
+                    window.driverMarker = new google.maps.Marker({
+                        position: driverPostion,
+                        map,
+                        icon: "{% static 'pics/driver_location.png' %}"
+                    });
+                } else {
+                    window.driverMarker.setPosition(driverPostion);
+                }
+
+                map.panTo(driverPostion);
+            },
+            pos => console.log(pos))
     }
 </script>
 
@@ -80,8 +115,11 @@
     </div>
 </div>
 {% else %}
-<div class="card" style="padding:14em">
-    No Delivery to be Delivered
+<div class="h-100 d-flex flex-column align-items-center justify-content-center">
+    <img src="{% static 'pics/no_delivery.gif' %}" alt="" class="mb-2" width="200" height="200">
+    <p>Nothing To Be Delivered</p>
+
+    <a href="{% url 'driver:deliveries_available' %}" class="btn btn-primary">Available Deliveries</a>
 </div>
 {% endif %}
 
