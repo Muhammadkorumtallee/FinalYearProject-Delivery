@@ -48,6 +48,8 @@ class Delivery(models.Model):
     #delivery latitude and longitude 
     delivery_address_latitude = models.FloatField(default=0)
     delivery_address_longitude = models.FloatField(default=0)
+    restaurant_address_lat = models.FloatField(default=0)
+    restaurant_address_lng = models.FloatField(default=0)
 
     #price
     duration = models.IntegerField(default=0)

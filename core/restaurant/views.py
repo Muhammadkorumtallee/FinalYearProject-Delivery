@@ -57,6 +57,8 @@ def post_delivery(request):
             posting_delivery = deliverypost_form.save(commit=False)
             posting_delivery.restaurant = request.user.restaurant
             posting_delivery.status_of_delivery = Delivery.DELIVERY_POSTED              #change status of delivery
+            posting_delivery.restaurant_address_lat = request.user.restaurant.restaurant_address_latitude
+            posting_delivery.restaurant_address_lng = request.user.restaurant.restaurant_address_longitude
             
 
             try:
