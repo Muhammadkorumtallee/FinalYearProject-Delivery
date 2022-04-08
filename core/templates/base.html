@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
+    <script src="https://kit.fontawesome.com/d26d1345cd.js" crossorigin="anonymous"></script>
 </head>
 
 {% load bootstrap4 %}
@@ -16,7 +17,7 @@
 
 <body>
     <nav class="navbar {% if not request.user.is_authenticated %} navbar-expand-lg {% endif %} navbar-light bg-secondary">
-          <a class="navbar-brand" href="/">Delivery Management</a>
+          <a class="navbar-brand" href="">Delivery Management</a>
           {% if not request.user.is_authenticated %}
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -37,7 +38,10 @@
             <span class="mr-4">
               {{ request.user.get_full_name|title }}
             </span>
-            <a href="/signout" class="btn btn-danger btn-block">SignOut</a>
+            <a href="/signout" class="btn btn-block btn-danger btn-md mt-2">
+              <em class="fas fa-sign-out-alt mr-1"></em>
+              Sign Out
+            </a>
           </form>
           {% endif %}
     </nav>

@@ -44,8 +44,8 @@
                 <h6>{{request.user.restaurant.restaurant_address}}</h6>
             </div> 
             <div class="list-group text-center">
-                <a href="{% url 'driver:salary' %}" class="list-group-item {% if request.path == salary_url %} active {% endif %}">Salary</a>
-               
+                <a href="{% url 'driver:salary' %}" class="list-group-item {% if request.path == salary_url %} active {% endif %}">Summary</a>
+                <a href="#" class="list-group-item">Delivery Done</a>
             </div>
         </div>
         <div class="col-8">

@@ -32,12 +32,9 @@
                         <div class="row">
                             <div class="class col-8">
                                 {% csrf_token %}
-                                {% bootstrap_form deliverypost_form exclude='delivery_address_latitude,
-                                delivery_address_longitude, restaurant_address_lat' %}
-                                <input hidden id="delivery_address_latitude" name="delivery_address_latitude"
-                                    value="{{posting.delivery_address_latitude}}">
-                                <input hidden id="delivery_address_longitude" name="delivery_address_longitude"
-                                    value="{{posting.delivery_address_longitude}}">
+                                {% bootstrap_form deliverypost_form exclude='delivery_address_latitude, delivery_address_longitude' %}
+                                <input hidden id="delivery_address_latitude" name="delivery_address_latitude" value="{{posting.delivery_address_latitude}}">
+                                <input hidden id="delivery_address_longitude" name="delivery_address_longitude" value="{{posting.delivery_address_longitude}}">
                             </div>
                             <div class="class col-4">
                                 <div id="googlemap"></div>

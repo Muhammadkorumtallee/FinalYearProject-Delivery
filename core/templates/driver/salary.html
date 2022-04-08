@@ -3,8 +3,35 @@
 
 {% block main %}
 
-<div>
-    {{total}}
-</div>
+<div class="mt-4 p-2 mb-5">
+    
+  
+  <div class="mt-2 p-2">
+    <strong class="text-primary">SUMMARY</strong>
+    <hr />
+  
+    <div class="d-flex text-center">
+      <div class="flex-grow-1">
+        <h4 class="text-success">€{{ total }}</h4>
+        <span class="text-primary">Total Earnings</span>
+      </div>
+      <div class="flex-grow-1">
+        <h4 class="text-success">{{ number_deliveries }} Jobs</h4>
+        <span class="text-primary">Completed</span>
+      </div>
+      <div class="flex-grow-1">
+        <h4 class="text-success">{{ distance_traveled }} Km</h4>
+        <span class="text-primary">Total Distance</span>
+      </div>
+    </div>
+    <hr />
+  </div>
+  
+  <div class="p-2">
+    <a href="/signout" class="btn btn-block btn-danger btn-md mt-2">
+      <em class="fas fa-sign-out-alt mr-1"></em>
+      Sign Out
+    </a>
+  </div>
 
 {% endblock %}

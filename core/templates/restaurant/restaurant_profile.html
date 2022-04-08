@@ -26,8 +26,10 @@
             {% csrf_token %}
             {% bootstrap_form user_form %}
             {% bootstrap_form restaurant_form exclude='restaurant_address_latitude, restaurant_address_longitude' %}
-            <input hidden id="restaurant_address_latitude" name="restaurant_address_latitude" value="{{restaurant_address_latitude}}">
-            <input hidden id="restaurant_address_longitude" name="restaurant_address_longitude" value="{{restaurant_address_longitude}}">
+            <input hidden id="restaurant_address_latitude" name="restaurant_address_latitude"
+                value="{{restaurant_address_latitude}}">
+            <input hidden id="restaurant_address_longitude" name="restaurant_address_longitude"
+                value="{{restaurant_address_longitude}}">
             <div class="class col-4">
                 <div id="googlemap_restaurantprofile"></div>
                 <div id="infowindow-content">
@@ -54,22 +56,6 @@
             </button>
         </form>
     </div>
-</div>
-
-<br>
-<h3 class="text-secondary">Mobile Number</h3>
-<div class="card bg-white mt-2 mb-5">
-    <div class="card-body">
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <button class="input-group-text" id="mobile_number" type="button">Submit</button>
-            </div>
-            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="mobile_number"
-                placeholder="Enter Number Here">
-        </div>
-    </div>
-
 </div>
 
 <script>

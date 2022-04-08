@@ -45,7 +45,7 @@ class Delivery(models.Model):
     posted_time = models.DateTimeField(default=timezone.now)
     delivered_time = models.DateTimeField(null=True, blank=True)
 
-    #delivery latitude and longitude 
+    #delivery and restaurant latitude and longitude 
     delivery_address_latitude = models.FloatField(default=0)
     delivery_address_longitude = models.FloatField(default=0)
     restaurant_address_lat = models.FloatField(default=0)

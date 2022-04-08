@@ -70,8 +70,13 @@ def salary(request):
     deliveries = Delivery.objects.filter(
         driver=request.user.driver, status_of_delivery=Delivery.DELIVERY_DELIVERED)
 
+
+    distance_traveled = sum(delivery.distance for delivery in deliveries)
     total = round(sum(delivery.price for delivery in deliveries))
+    number_deliveries = len(deliveries)
 
     return render(request, 'driver/salary.html', {
-        "total": total
+        "total": total,
+        "number_deliveries": number_deliveries,
+        "distance_traveled": distance_traveled
     })
