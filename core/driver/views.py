@@ -52,7 +52,7 @@ def delivering_delivery_page(request):
         delivery.delivered_time = timezone.now()
         delivery.save()
 
-        return redirect(reverse('driver:delivering_delivery'))
+        return render(request,'driver/complete_delivery.html')
 
     return render(request, 'driver/delivering_delivery.html', {
         "GOOGLE_API_MAP": settings.GOOGLE_API_MAP,
@@ -71,8 +71,8 @@ def salary(request):
         driver=request.user.driver, status_of_delivery=Delivery.DELIVERY_DELIVERED)
 
 
-    distance_traveled = sum(delivery.distance for delivery in deliveries)
-    total = round(sum(delivery.price for delivery in deliveries))
+    distance_traveled = round(sum(delivery.distance for delivery in deliveries),2)
+    total = sum(delivery.price for delivery in deliveries)
     number_deliveries = len(deliveries)
 
     return render(request, 'driver/salary.html', {
@@ -80,3 +80,4 @@ def salary(request):
         "number_deliveries": number_deliveries,
         "distance_traveled": distance_traveled
     })
+
