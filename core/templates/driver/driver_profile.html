@@ -6,6 +6,7 @@
 {% url 'driver:deliveries_available' as deliveries_available_url %}
 {% url 'driver:delivering_delivery' as delivering_delivery_url %}
 {% url 'driver:salary' as salary_url %}
+{% url 'driver:deliveries_done' as deliveries_done_url %}
 
 <nav class="navbar {% if not request.user.is_authenticated %} navbar-expand-lg {% endif %} navbar-light bg-secondary">
     <a class="navbar-brand" href="/">Delivery Management</a>
@@ -45,7 +46,7 @@
             </div> 
             <div class="list-group text-center">
                 <a href="{% url 'driver:salary' %}" class="list-group-item {% if request.path == salary_url %} active {% endif %}">Summary</a>
-                <a href="#" class="list-group-item">Delivery Done</a>
+                <a href="{% url 'driver:deliveries_done' %}" class="list-group-item {% if request.path == deliveries_done_url %} active {% endif %}">Delivery Done</a>
             </div>
         </div>
         <div class="col-8">

@@ -1,0 +1,20 @@
+{% extends 'driver/driver_profile.html' %}
+{% load bootstrap4 %}
+
+{% block main %}
+<br>
+<h3 class="text-secondary">Password Change</h3>
+<div class="card bg-white mt-2 mb-5">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {% bootstrap_form passwordchange_form %}
+            <input type="hidden" name="task" value="password_update">
+            <button type="submit" class="btn btn-dark">
+                Change
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

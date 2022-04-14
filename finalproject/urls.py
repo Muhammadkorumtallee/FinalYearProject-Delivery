@@ -19,8 +19,9 @@ restaurant_urlpatterns = [
 
 driver_urlpatterns = [
     path('', d_views.home, name="home"),
-    path('driver_profile/', d_views.driver_profile, name="driver_profile"),
+    path('driver_info/', d_views.driver_info, name="driver_info"),
     path('salary/', d_views.salary, name="salary"),
+     path('deliveries_done/', d_views.deliveries_done, name="deliveries_done"),
 
     path('delivery/available/', d_views.deliveries_available_page, name="deliveries_available"),
     path('delivery/delivering/', d_views.delivering_delivery_page, name="delivering_delivery"),
