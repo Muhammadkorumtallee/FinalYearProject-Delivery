@@ -1,0 +1,15 @@
+{% extends 'driver/driverpage.html' %}
+{% load static %}
+
+{% block head %}
+<div class="h-100 d-flex flex-column align-items-center justify-content-center">
+    <img src="{% static 'pics/delivery_completed.gif' %}" alt="" class="mb-4 mt-4" width="300" height="300">
+    <p>Delivery Accepted</p>
+    <a href="{% url 'driver:deliveries_available' %}" class="btn btn-primary">Back To Available Deliveries</a>
+    <br>
+    <a href="{% url 'driver:delivering_delivery' %}" class="btn btn-primary">Go On Delivery</a>
+</div>
+
+{% include 'driver/nav_tabs.html' %}
+
+{% endblock %}

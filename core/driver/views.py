@@ -30,10 +30,10 @@ def deliveries_available_page(request):
         if delivery:
             delivery.status_of_delivery = Delivery.DELIVERY_DELIVERING
             delivery.driver = request.user.driver
-            messages.success(request, 'Delivery Accepted')
+            
             delivery.save()
 
-        return redirect(reverse('driver:deliveries_available'))
+        return render(request, 'driver/accepted_delivery.html')
 
     return render(request, 'driver/deliveries_available.html', {
         "GOOGLE_API_MAP": settings.GOOGLE_API_MAP,
