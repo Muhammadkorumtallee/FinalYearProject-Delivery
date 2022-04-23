@@ -25,5 +25,9 @@ class TestModel(TestCase):
             })
 
         self.assertTrue(form.is_valid())
-
     
+    def testing_posting_deliveries_no_address(self):
+        form = DeliveriesCreateForm(data={})
+
+        self.assertFalse(form.is_valid())
+        self.assertEquals(len(form.errors),3)
