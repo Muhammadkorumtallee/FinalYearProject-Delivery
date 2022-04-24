@@ -4,6 +4,8 @@ from core.restaurant.forms import DeliveriesCreateForm
 from django.urls import reverse, resolve
 from core.restaurant import views
 from core.views import home
+from core.restaurant.views import profilepage
+from finalproject.urls import driver_urlpatterns
 
 
 # testing if a user is created
@@ -37,3 +39,4 @@ class TestModel(TestCase):
     def testing_url_homepage(self):
         url = reverse('home')
         self.assertEquals(resolve(url).func, home)
+
