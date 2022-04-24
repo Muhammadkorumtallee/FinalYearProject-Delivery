@@ -13,12 +13,14 @@ import requests
 def home(request):
     return redirect(reverse('restaurant:restaurant_profile'))
 
+#Profile page for restaurant
 @login_required(login_url="/signin/?next=/restaurant/")
 def profilepage(request):
     user_form = forms.UserForm(instance=request.user)
     restaurant_form = forms.RestaurantForm(instance=request.user.restaurant)
     passwordchange_form = PasswordChangeForm(request.user)
 
+    #update name of restaurant, avatar and address of restaurant
     if request.method == "POST":
         if request.POST.get('task') == 'profile_update':
             user_form = forms.UserForm(request.POST, instance=request.user)
@@ -29,6 +31,7 @@ def profilepage(request):
                 restaurant_form.save()
                 return redirect(reverse('restaurant:restaurant_profile'))
 
+        #change password
         elif request.POST.get('task') == 'password_update':
             passwordchange_form = PasswordChangeForm(request.user, request.POST)
             if passwordchange_form.is_valid():
@@ -45,6 +48,7 @@ def profilepage(request):
         "passwordchange_form": passwordchange_form
     })
 
+#post delivery
 @login_required(login_url="/signin/?next=/restaurant/")
 def post_delivery(request):
     deliverypost_form = forms.DeliveriesCreateForm()
@@ -60,7 +64,7 @@ def post_delivery(request):
             posting_delivery.restaurant_address_lat = request.user.restaurant.restaurant_address_latitude
             posting_delivery.restaurant_address_lng = request.user.restaurant.restaurant_address_longitude
             
-
+            #using google api to get lat and lng of delivery 
             try:
                 r = requests.get("https://maps.googleapis.com/maps/api/distancematrix/json?origins={}&destinations={}&mode=driving&key={}".format(
                     store_restaurant_address,
@@ -74,6 +78,7 @@ def post_delivery(request):
                 posting_delivery.distance = round(distance/1000, 2)
                 posting_delivery.duration = int(duration/60)
 
+                #based on distance price is added to the delivery
                 if posting_delivery.distance <= 2:
                     posting_delivery.price = 2
                 elif  posting_delivery.distance > 2 and posting_delivery.distance <= 4:
@@ -92,7 +97,8 @@ def post_delivery(request):
         'deliverypost_form': deliverypost_form, 
         "posting": posts,
         "GOOGLE_API_MAP": settings.GOOGLE_API_MAP,})
-        
+
+#restaurant can view deliveries posted or being delivered
 @login_required(login_url="/sign-in/?next=/restaurant/")
 def current_delivery_page(request):
     deliveries = Delivery.objects.filter(
@@ -102,7 +108,8 @@ def current_delivery_page(request):
             Delivery.DELIVERY_POSTED
         ]
     )
-        
+
+    #restaurant can cancel deliveries before driver accepts the delivery   
     if request.method == 'POST':
         delivery = get_object_or_404(Delivery, pk=request.POST.get('receipt_number'))
         if delivery:
@@ -114,6 +121,7 @@ def current_delivery_page(request):
         "deliveries": deliveries
     })
 
+#when delivery cancelled, delivered it shows up here
 @login_required(login_url="/sign-in/?next=/restaurant/")
 def archived_delivery_page(request):
     deliveries = Delivery.objects.filter(

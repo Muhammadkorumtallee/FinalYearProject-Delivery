@@ -15,7 +15,7 @@ from core.restaurant import forms
 def home(request):
     return redirect(reverse('driver:deliveries_available'))
 
-
+#driver can view available deliveries on map
 @login_required(login_url="/signin/?next=/driver/")
 def deliveries_available_page(request):
 
@@ -40,7 +40,7 @@ def deliveries_available_page(request):
         "del": deliveries
     })
 
-
+#when driver accepts delivery, it shows up here with directions and shows their live location
 @login_required(login_url="/signin/?next=/driver/")
 def delivering_delivery_page(request):
     delivery = Delivery.objects.filter(
@@ -86,7 +86,7 @@ def driver_info(request):
                       "passwordchange_form": passwordchange_form
                   })
 
-
+#once driver delivered delivery the price, km and jobs increment according 
 @login_required(login_url="/signin/?next=/driver/")
 def salary(request):
     deliveries = Delivery.objects.filter(
@@ -103,7 +103,7 @@ def salary(request):
         "distance_traveled": distance_traveled
     })
 
-
+#driver sees the delivery they have done
 @login_required(login_url="/signin/?next=/driver/")
 def deliveries_done(request):
     deliveries = Delivery.objects.filter(

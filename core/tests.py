@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django import forms
-from core.models import Restaurant, Delivery
 from core.restaurant.forms import DeliveriesCreateForm
+from django.urls import reverse, resolve
+from core.restaurant import views
+from core.views import home
+
 
 # testing if a user is created
 
@@ -22,12 +24,16 @@ class TestModel(TestCase):
             'information': 'leave outside',
             'delivery_address_latitude': 54,
             'delivery_address_longitude': 100,
-            })
+        })
 
         self.assertTrue(form.is_valid())
-    
+
     def testing_posting_deliveries_no_address(self):
         form = DeliveriesCreateForm(data={})
 
         self.assertFalse(form.is_valid())
-        self.assertEquals(len(form.errors),3)
+        self.assertEquals(len(form.errors), 3)
+
+    def testing_url_homepage(self):
+        url = reverse('home')
+        self.assertEquals(resolve(url).func, home)

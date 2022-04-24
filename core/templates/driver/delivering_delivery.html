@@ -8,8 +8,9 @@
     async>
     </script>
 
-<script>
 
+<script>
+    //showing the directions on map
     var r_latitude = parseFloat("{{ del.restaurant_address_lat }}");
     var r_longitude = parseFloat("{{ del.restaurant_address_lng }}");
     var delivery_latitude = parseFloat("{{ del.delivery_address_latitude }}");
@@ -55,7 +56,7 @@
             }
         );
     }
-
+    //showing driver live location
     function updateDriverPosition(map) {
         navigator.geolocation.watchPosition(
             pos => {

@@ -13,7 +13,7 @@
             center: { lat: 53.350140, lng: -6.266155 },
             zoom: 13,
         });
-
+    //fetching api created to get each delivery to show up on map
         fetch("{% url 'driver:available_deliveries' %}").then(response => response.json()).then(json => {
             console.log(json);
 
@@ -36,7 +36,7 @@
             }
         })
     }
-
+    //displayes the information of each deliveries on different cards when selected
     function PopUpDelivery(delivery) {
         $("#delivery-popup").css("display", "block");
         $("#address").html(delivery.address);

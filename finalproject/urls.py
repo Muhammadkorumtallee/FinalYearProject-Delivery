@@ -32,7 +32,7 @@ driver_urlpatterns = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home),
+    path('', views.home, name="home"),
 
     path('driver/', include((driver_urlpatterns, 'driver'))),
     path('restaurant/', include((restaurant_urlpatterns, 'restaurant'))),

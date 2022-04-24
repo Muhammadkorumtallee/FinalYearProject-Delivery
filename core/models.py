@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
 
+#restaurant model 
 class Restaurant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     restaurant_address = models.CharField(max_length=255, blank=True)
@@ -14,6 +15,7 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+#driver model 
 class Driver(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     latitude = models.FloatField(default=0)
@@ -23,6 +25,7 @@ class Driver(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+#delivery model
 class Delivery(models.Model):
     DELIVERY_POSTING = "posting"
     DELIVERY_POSTED= "posted"
