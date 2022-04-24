@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-#import django_on_heroku
+import django_on_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -131,4 +131,4 @@ MEDIA_URL = '/media/'
 
 GOOGLE_API_MAP = "AIzaSyA0KSBDudtdwEolhqm63YZBHRzHAx3pPro"
 
-#django_on_heroku.settings(locals())
+django_on_heroku.settings(locals())
