@@ -69,7 +69,6 @@ node==0.9.25
 nodejs==0.1.1
 notebook==6.0.3
 npm==0.1.1
-numpy==1.18.2
 oauthlib==3.0.1
 odict==1.7.0
 optional-django==0.1.0
