@@ -13,5 +13,6 @@ jobs:
     - uses: butlerlogic/action-autotag@1.0.0
       with:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        strategy: package # Optional, since "package" is the default strategy
-        root: "/path/to/subdirectory"
+        strategy: regex # Optional since regex_pattern is defined
+        root: "/path/to/subdirectory/my.file"
+        regex_pattern: "version=([0-9\.])"
