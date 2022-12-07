@@ -1,13 +1,15 @@
-# .github/workflows/tagpr.yml
-name: tagpr
+name: Create Tag
+
 on:
   push:
-    branches: ["master"]
+    branches:
+      - master
+
 jobs:
-  tagpr:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: butlerlogic/action-autotag@stable
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
