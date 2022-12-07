@@ -1,2 +1,2 @@
 # FinalYearProject-Delivery
-Final Year Project - tagging
+Final Year Project
