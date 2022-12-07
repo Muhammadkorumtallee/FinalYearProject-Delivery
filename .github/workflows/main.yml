@@ -1,19 +1,17 @@
-# example 1: on push to master
-name: Bump version
+name: Create Tag
+
 on:
   push:
     branches:
       - master
+
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+    - uses: butlerlogic/action-autotag@1.0.0
       with:
-        fetch-depth: '0'
-
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.26.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: false
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        strategy: package # Optional, since "package" is the default strategy
+        root: "/path/to/subdirectory"
